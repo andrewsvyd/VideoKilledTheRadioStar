@@ -1,0 +1,35 @@
+{
+  "head": {
+    "title": "Women's Basketball",
+    "status": "200"
+  },
+  "body": [
+    {
+      "element": "outline",
+      "text": "Shows",
+      "key": "shows",
+      "children": [
+        {
+          "element": "outline",
+          "type": "link",
+          "text": "Lynx Minute",
+          "URL": "http://opml.radiotime.com/Tune.ashx?c=pbrowse&id=p1125105&filter=p:topic",
+          "guide_id": "p1125105",
+          "subtext": "A daily recap of practice and games featuring...",
+          "genre_id": "g3403",
+          "item": "show",
+          "image": "http://cdn-profiles.tunein.com/p1125105/images/logoq.png",
+          "current_track": "A daily recap of practice and games featuring...",
+          "preset_id": "p1125105"
+        }
+      ]
+    },
+    {
+      "element": "outline",
+      "type": "link",
+      "text": "Eastern Conference",
+      "URL": "http://opml.radiotime.com/Browse.ashx?id=g3397&filter=p:topic",
+      "guide_id": "g3397"
+    }
+  ]
+}

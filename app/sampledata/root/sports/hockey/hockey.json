@@ -1,0 +1,24 @@
+{
+  "head": {
+    "title": "Canadian Hockey",
+    "status": "200"
+  },
+  "body": [
+    {
+      "element": "outline",
+      "type": "audio",
+      "text": "Funny 1040 (Vancouver, BC)",
+      "URL": "http://opml.radiotime.com/Tune.ashx?id=s31291",
+      "bitrate": "40",
+      "reliability": "96",
+      "guide_id": "s31291",
+      "subtext": "English",
+      "genre_id": "g209",
+      "formats": "mp3",
+      "item": "station",
+      "image": "http://cdn-radiotime-logos.tunein.com/s31291q.png",
+      "now_playing_id": "s31291",
+      "preset_id": "s31291"
+    }
+  ]
+}

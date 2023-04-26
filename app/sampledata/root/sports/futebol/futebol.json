@@ -1,0 +1,60 @@
+{
+  "head": {
+    "title": "Top Rádios com Futebol Ao Vivo",
+    "status": "200"
+  },
+  "body": [
+    {
+      "element": "outline",
+      "type": "audio",
+      "text": "Rádio CBN Rio (Rio de Janeiro)",
+      "URL": "http://opml.radiotime.com/Tune.ashx?id=s1143",
+      "bitrate": "128",
+      "reliability": "66",
+      "guide_id": "s1143",
+      "subtext": "CBN Brasil",
+      "genre_id": "g255",
+      "formats": "mp3",
+      "show_id": "p1102342",
+      "item": "station",
+      "image": "http://cdn-profiles.tunein.com/s1143/images/logoq.png?t=156589",
+      "current_track": "CBN Brasil",
+      "now_playing_id": "s1143",
+      "preset_id": "s1143"
+    },
+    {
+      "element": "outline",
+      "type": "audio",
+      "text": "Bandeirantes FM São Paulo (São Paulo)",
+      "URL": "http://opml.radiotime.com/Tune.ashx?id=s86562",
+      "bitrate": "96",
+      "reliability": "79",
+      "guide_id": "s86562",
+      "subtext": "Bora Brasil",
+      "genre_id": "g255",
+      "formats": "mp3",
+      "show_id": "p967852",
+      "item": "station",
+      "image": "http://cdn-profiles.tunein.com/s86562/images/logoq.png?t=1",
+      "current_track": "Bora Brasil",
+      "now_playing_id": "s86562",
+      "preset_id": "s86562"
+    },
+    {
+      "element": "outline",
+      "type": "audio",
+      "text": "Jovem Pan News São Paulo (São Paulo)",
+      "URL": "http://opml.radiotime.com/Tune.ashx?id=s7047",
+      "bitrate": "48",
+      "reliability": "81",
+      "guide_id": "s7047",
+      "subtext": "A Rede da Informação",
+      "genre_id": "g255",
+      "formats": "mp3",
+      "item": "station",
+      "image": "http://cdn-profiles.tunein.com/s7047/images/logoq.png?t=153267",
+      "now_playing_id": "s7047",
+      "preset_id": "s7047"
+    }
+  ]
+}

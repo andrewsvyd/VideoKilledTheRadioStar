@@ -1,0 +1,35 @@
+{
+  "head": {
+    "title": "Eastern Conference",
+    "status": "200"
+  },
+  "body": [
+    {
+      "element": "outline",
+      "text": "Shows",
+      "key": "shows",
+      "children": [
+        {
+          "element": "outline",
+          "type": "link",
+          "text": "The Bill Simmons Podcast",
+          "URL": "http://opml.radiotime.com/Tune.ashx?c=pbrowse&id=p795854&filter=p:topic",
+          "guide_id": "p795854",
+          "subtext": "HBO and The Ringer's Bill Simmons hosts the...",
+          "genre_id": "g3403",
+          "item": "show",
+          "image": "http://cdn-profiles.tunein.com/p795854/images/logoq.png?t=151101",
+          "current_track": "HBO and The Ringer's Bill Simmons hosts the...",
+          "preset_id": "p795854"
+        }
+      ]
+    },
+    {
+      "element": "outline",
+      "type": "link",
+      "text": "New York Liberty",
+      "URL": "http://opml.radiotime.com/Browse.ashx?id=g2900&filter=p:topic",
+      "guide_id": "g2900"
+    }
+  ]
+}

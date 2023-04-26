@@ -1,0 +1,12 @@
+{
+  "head": {
+    "status": "200"
+  },
+  "body": [
+    {
+      "element": "outline",
+      "type": "text",
+      "text": "This show is not available"
+    }
+  ]
+}

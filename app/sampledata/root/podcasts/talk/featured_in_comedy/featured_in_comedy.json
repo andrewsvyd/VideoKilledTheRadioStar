@@ -1,0 +1,73 @@
+{
+  "head": {
+    "title": "Featured in Comedy",
+    "status": "200"
+  },
+  "body": [
+    {
+      "element": "outline",
+      "type": "link",
+      "text": "Left of Straight Radio",
+      "URL": "http://opml.radiotime.com/Tune.ashx?c=pbrowse&id=p823844&filter=p:topic",
+      "guide_id": "p823844",
+      "subtext": "Left of Str8 Radio is a network of programs...",
+      "genre_id": "g240",
+      "item": "show",
+      "image": "http://cdn-radiotime-logos.tunein.com/p823844q.png",
+      "current_track": "Left of Str8 Radio is a network of programs...",
+      "preset_id": "p823844"
+    },
+    {
+      "element": "outline",
+      "type": "link",
+      "text": "The Pandora Boxx Show",
+      "URL": "http://opml.radiotime.com/Tune.ashx?c=pbrowse&id=p774623&filter=p:topic",
+      "guide_id": "p774623",
+      "subtext": "The Pandora Boxx show is journey into pop...",
+      "genre_id": "g240",
+      "item": "show",
+      "image": "http://cdn-radiotime-logos.tunein.com/p774623q.png",
+      "current_track": "The Pandora Boxx show is journey into pop...",
+      "preset_id": "p774623"
+    },
+    {
+      "element": "outline",
+      "type": "link",
+      "text": "On The Rocks: Where Celebrities & Cocktails Mix",
+      "URL": "http://opml.radiotime.com/Tune.ashx?c=pbrowse&id=p859228&filter=p:topic",
+      "guide_id": "p859228",
+      "subtext": "TV & Radio Personality Alexander Rodriguez...",
+      "genre_id": "g29",
+      "item": "show",
+      "image": "http://cdn-profiles.tunein.com/p859228/images/logoq.png?t=6",
+      "current_track": "TV & Radio Personality Alexander Rodriguez...",
+      "preset_id": "p859228"
+    },
+    {
+      "element": "outline",
+      "type": "link",
+      "text": "Nooner with Alec and Calpernia",
+      "URL": "http://opml.radiotime.com/Tune.ashx?c=pbrowse&id=p774651&filter=p:topic",
+      "guide_id": "p774651",
+      "subtext": "Nooner with Alec and Calpernia",
+      "genre_id": "g240",
+      "item": "show",
+      "image": "http://cdn-radiotime-logos.tunein.com/p774651q.png",
+      "current_track": "Nooner with Alec and Calpernia",
+      "preset_id": "p774651"
+    },
+    {
+      "element": "outline",
+      "type": "link",
+      "text": "The Del and Emerson Show",
+      "URL": "http://opml.radiotime.com/Tune.ashx?c=pbrowse&id=p717996&filter=p:topic",
+      "guide_id": "p717996",
+      "subtext": "The Del and Emerson Show",
+      "genre_id": "g29",
+      "item": "show",
+      "image": "http://cdn-profiles.tunein.com/p717996/images/logoq.png?t=1",
+      "current_track": "The Del and Emerson Show",
+      "preset_id": "p717996"
+    }
+  ]
+}
