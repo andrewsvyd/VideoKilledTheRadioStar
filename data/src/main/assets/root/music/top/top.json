@@ -66,7 +66,7 @@
           "playing": "Justin Bieber - Sorry",
           "playing_image": "http://cdn-albums.tunein.com/gn/KQ7HHKG6QDq.jpg",
           "item": "station",
-          "image": "http://cdn-profiles.tunein.com/s302061/images/logoq.png?t=161884",
+          "image": "http://cdn-profiles.tunein.com/s302061/images/logoq.png",
           "now_playing_id": "s302061",
           "preset_id": "s302061"
         },
@@ -84,7 +84,7 @@
           "playing": "Imagine Dragons - Hot-Enemy",
           "playing_image": "http://cdn-albums.tunein.com/gn/LH26QRTQNWq.jpg",
           "item": "station",
-          "image": "http://cdn-profiles.tunein.com/s111388/images/logoq.png?t=1",
+          "image": "http://cdn-profiles.tunein.com/s111388/images/logoq.png",
           "now_playing_id": "s111388",
           "preset_id": "s111388"
         },
@@ -103,7 +103,7 @@
           "playing_image": "http://cdn-albums.tunein.com/gn/5XZ6875JJ8q.jpg",
           "show_id": "p127002",
           "item": "station",
-          "image": "http://cdn-profiles.tunein.com/s31121/images/logoq.jpg?t=152534",
+          "image": "http://cdn-profiles.tunein.com/s31121/images/logoq.jpg",
           "current_track": "Eve Morgan",
           "now_playing_id": "s31121",
           "preset_id": "s31121"
