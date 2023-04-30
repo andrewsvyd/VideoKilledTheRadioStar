@@ -58,7 +58,7 @@ fun VideoKilledTheRadioStarApp() {
 
             composable(route = Browser.route) { backStackEntry ->
                 RadioBrowserScreen(
-                    backStackEntry.arguments?.getString(Destination.URL).orEmpty(),
+                    backStackEntry.arguments?.getString(Destination.URL),
                     padding
                 ) { destinationUrl: String, destinationTitle: String ->
                     navController.navigate(
@@ -103,7 +103,7 @@ fun RadioBrowserTopBar(
 
 @Composable
 fun RadioBrowserScreen(
-    url: String,
+    url: String?,
     padding: PaddingValues,
     onLinkClick: (url: String, title: String) -> Unit
 ) {
