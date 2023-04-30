@@ -1,0 +1,21 @@
+{
+  "head": {
+    "title": "Schlager",
+    "status": "200"
+  },
+  "body": [
+    {
+      "element": "outline",
+      "type": "link",
+      "text": "Dirk Walde",
+      "URL": "http://opml.radiotime.com/Tune.ashx?c=pbrowse&id=p1103087&filter=p:topic",
+      "guide_id": "p1103087",
+      "subtext": "Demos von mir als Alleinunterhalter...",
+      "genre_id": "g2806",
+      "item": "show",
+      "image": "http://cdn-profiles.tunein.com/p1103087/images/logoq.png",
+      "current_track": "Demos von mir als Alleinunterhalter...",
+      "preset_id": "p1103087"
+    }
+  ]
+}

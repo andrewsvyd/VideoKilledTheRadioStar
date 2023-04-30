@@ -1,0 +1,60 @@
+{
+  "head": {
+    "title": "Listen Live",
+    "status": "200"
+  },
+  "body": [
+    {
+      "element": "outline",
+      "type": "audio",
+      "text": "BBC Radio 4 (London, UK)",
+      "URL": "http://opml.radiotime.com/Tune.ashx?id=s25419",
+      "bitrate": "128",
+      "reliability": "98",
+      "guide_id": "s25419",
+      "subtext": "Six O'Clock News",
+      "genre_id": "g255",
+      "formats": "mp3",
+      "show_id": "p3530248",
+      "item": "station",
+      "image": "http://cdn-profiles.tunein.com/s25419/images/logoq.jpg?t=2",
+      "current_track": "Six O'Clock News",
+      "now_playing_id": "s25419",
+      "preset_id": "s25419"
+    },
+    {
+      "element": "outline",
+      "type": "audio",
+      "text": "Cheddar News (US)",
+      "URL": "http://opml.radiotime.com/Tune.ashx?id=s296280",
+      "bitrate": "64",
+      "reliability": "99",
+      "guide_id": "s296280",
+      "subtext": "Feed your curiosity about what's next.",
+      "genre_id": "g3139",
+      "formats": "mp3",
+      "item": "station",
+      "image": "http://cdn-profiles.tunein.com/s296280/images/logoq.png?t=161851",
+      "now_playing_id": "s296280",
+      "preset_id": "s296280"
+    },
+    {
+      "element": "outline",
+      "type": "audio",
+      "text": "BBC World Service News (UK)",
+      "URL": "http://opml.radiotime.com/Tune.ashx?id=s24948",
+      "bitrate": "128",
+      "reliability": "99",
+      "guide_id": "s24948",
+      "subtext": "Lives Less Ordinary",
+      "genre_id": "g3125",
+      "formats": "mp3",
+      "show_id": "p9",
+      "item": "station",
+      "image": "http://cdn-profiles.tunein.com/s24948/images/logoq.jpg?t=1",
+      "current_track": "Lives Less Ordinary",
+      "now_playing_id": "s24948",
+      "preset_id": "s24948"
+    }
+  ]
+}
