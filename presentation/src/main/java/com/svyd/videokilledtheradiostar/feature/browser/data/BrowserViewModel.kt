@@ -2,8 +2,10 @@ package com.svyd.videokilledtheradiostar.feature.browser.data
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.svyd.domain.common.interactor.Interactor
+import com.svyd.domain.common.interactor.ParametrizedInteractor
 import com.svyd.domain.common.exception.Failure
+import com.svyd.domain.common.functional.Either
+import com.svyd.domain.common.interactor.Interactor
 import com.svyd.domain.common.mapper.TypeMapper
 import com.svyd.domain.repository.model.Directory
 import com.svyd.videokilledtheradiostar.common.UiState
@@ -11,9 +13,16 @@ import com.svyd.videokilledtheradiostar.feature.browser.model.UiDirectory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * @param url a nullable string with destination url.
+ *            In case if value is null - the destination is root.
+ *            It is the only place where explicit nullable url param is accepted.
+ */
+
 class BrowserViewModel(
-    url: String,
-    private val directoryInteractor: Interactor<Directory, String>,
+    url: String?,
+    private val directoryInteractor: ParametrizedInteractor<Directory, String>,
+    private val rootDirectoryInteractor: Interactor<Directory>,
     private val mapper: TypeMapper<Directory, UiDirectory>
 ) : ViewModel() {
 
@@ -23,21 +32,23 @@ class BrowserViewModel(
     private var lastDirectoryRequest: String? = null
 
     fun retry() {
-        lastDirectoryRequest?.let {
-            directory(it)
-        }
+        directory(lastDirectoryRequest)
     }
 
     init {
         directory(url)
     }
 
-    private fun directory(url: String) {
+    private fun directory(url: String?) {
         lastDirectoryRequest = url
         _directoryState.value = UiState.Loading
-        directoryInteractor(url, viewModelScope, mapper) {
-            it.fold(::handleFailure, ::handleDirectory)
+
+        val onResult = { result: Either<Failure, UiDirectory> ->
+            result.fold(::handleFailure, ::handleDirectory)
         }
+
+        if (url != null) directoryInteractor(url, viewModelScope, mapper, onResult)
+        else rootDirectoryInteractor(viewModelScope, mapper, onResult)
     }
 
     private fun handleDirectory(directory: UiDirectory) {

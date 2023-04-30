@@ -7,8 +7,10 @@ import com.svyd.data.repository.NetworkDirectoryRepository
 import com.svyd.data.repository.model.mapper.DirectoryMapper
 import com.svyd.domain.common.exception.ErrorMapper
 import com.svyd.domain.common.interactor.Interactor
+import com.svyd.domain.common.interactor.ParametrizedInteractor
 import com.svyd.domain.common.mapper.TypeMapper
 import com.svyd.domain.interactor.DirectoryInteractor
+import com.svyd.domain.interactor.RootDirectoryInteractor
 import com.svyd.domain.repository.DirectoryRepository
 import com.svyd.domain.repository.model.Directory
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiDirectory
@@ -25,8 +27,12 @@ import java.util.concurrent.TimeUnit
 
 class PlainViewModelProvider {
 
-    fun provideInteractor() : Interactor<Directory, String> {
+    fun provideDirectoryInteractor() : ParametrizedInteractor<Directory, String> {
         return DirectoryInteractor(provideRepository(provideService(provideRetrofit()), DirectoryMapper()), ErrorMapper())
+    }
+
+    fun provideRootDirectoryInteractor() : Interactor<Directory> {
+        return RootDirectoryInteractor(provideRepository(provideService(provideRetrofit()), DirectoryMapper()), ErrorMapper())
     }
 
     fun provideMapper() : TypeMapper<Directory, UiDirectory> {
