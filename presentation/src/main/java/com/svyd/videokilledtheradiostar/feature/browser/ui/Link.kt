@@ -21,12 +21,12 @@ import com.svyd.videokilledtheradiostar.R
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiElement
 
 @Composable
-fun HorizontalLink(element: UiElement, onLinkClick: (url: String) -> Unit) {
+fun HorizontalLink(element: UiElement, onLinkClick: (url: String, title: String) -> Unit) {
     Card(
         shape = RoundedCornerShape(4.dp),
         backgroundColor = MaterialTheme.colors.surface,
         modifier = Modifier
-            .clickable { element.url?.let { onLinkClick(it) } }
+            .clickable { element.url?.let { onLinkClick(it, element.text) } }
             .padding(0.dp, 0.dp, 16.dp, 0.dp)
     ) {
         LinkBody(element = element, onLinkClick)
@@ -34,7 +34,7 @@ fun HorizontalLink(element: UiElement, onLinkClick: (url: String) -> Unit) {
 }
 
 @Composable
-fun VerticalLink(element: UiElement, onLinkClick: (url: String) -> Unit) {
+fun VerticalLink(element: UiElement, onLinkClick: (url: String, title: String) -> Unit) {
     Card(
         shape = RoundedCornerShape(4.dp),
         backgroundColor = MaterialTheme.colors.surface,
@@ -47,9 +47,9 @@ fun VerticalLink(element: UiElement, onLinkClick: (url: String) -> Unit) {
 }
 
 @Composable
-fun LinkBody(element: UiElement, onLinkClick: (url: String) -> Unit) {
+fun LinkBody(element: UiElement, onLinkClick: (url: String, title: String) -> Unit) {
     Row(
-        modifier = Modifier.clickable { element.url?.let { onLinkClick(it) } }
+        modifier = Modifier.clickable { element.url?.let { onLinkClick(it, element.text) } }
     ) {
         val image = element.playingImage ?: element.image
         LinkCover(image = image, placeholder = R.drawable.folder)

@@ -10,9 +10,9 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -20,23 +20,36 @@ import com.svyd.videokilledtheradiostar.R.*
 import com.svyd.videokilledtheradiostar.common.Destination
 import com.svyd.videokilledtheradiostar.common.Destination.Browser
 import com.svyd.videokilledtheradiostar.common.UiState
+import com.svyd.videokilledtheradiostar.common.UiState.Error
+import com.svyd.videokilledtheradiostar.common.UiState.Loading
+import com.svyd.videokilledtheradiostar.common.UiState.Success
+import com.svyd.videokilledtheradiostar.common.ui.theme.VideoKilledTheRadioStarTheme
 import com.svyd.videokilledtheradiostar.feature.browser.data.BrowserViewModel
 import com.svyd.videokilledtheradiostar.feature.browser.data.RadioBrowserViewModelFactory
+import com.svyd.videokilledtheradiostar.feature.browser.data.sample.SampleDirectoryData
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiDirectory
 
 @Composable
 fun VideoKilledTheRadioStarApp() {
 
     val appName = stringResource(id = string.app_name)
-    val title = remember { mutableStateOf(appName) }
+    var title by remember { mutableStateOf(appName) }
     val navController = rememberNavController()
     var showBackButton by remember { mutableStateOf(false) }
 
-    RadioBrowserTopBar(
-        showBackButton,
-        title,
+    LaunchedEffect(navController) {
         navController
-    ) { padding ->
+            .currentBackStackEntryFlow
+            .collect { backStackEntry ->
+                showBackButton = navController.previousBackStackEntry != null
+                title = backStackEntry.arguments?.getString(Destination.TITLE) ?: appName
+            }
+    }
+
+    RadioBrowserTopBar(
+        showBackButton = showBackButton,
+        title = title,
+        onBackButtonClick = { navController.navigateUp() }) { padding ->
 
         NavHost(
             navController = navController,
@@ -44,15 +57,17 @@ fun VideoKilledTheRadioStarApp() {
         ) {
 
             composable(route = Browser.route) { backStackEntry ->
-
-                val url = backStackEntry.arguments?.getString(Destination.URL_ARGUMENT)
-                showBackButton = navController.previousBackStackEntry != null
-
                 RadioBrowserScreen(
-                    url = url.orEmpty(),
-                    padding = padding,
-                    title = title
-                ) { navController.navigate(Browser.createRoute(it)) }
+                    backStackEntry.arguments?.getString(Destination.URL).orEmpty(),
+                    padding
+                ) { destinationUrl: String, destinationTitle: String ->
+                    navController.navigate(
+                        Browser.createRoute(
+                            destinationUrl,
+                            destinationTitle
+                        )
+                    )
+                }
             }
         }
     }
@@ -61,8 +76,8 @@ fun VideoKilledTheRadioStarApp() {
 @Composable
 fun RadioBrowserTopBar(
     showBackButton: Boolean,
-    title: MutableState<String>,
-    navController: NavHostController,
+    title: String,
+    onBackButtonClick: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -70,7 +85,7 @@ fun RadioBrowserTopBar(
             TopAppBar(
                 navigationIcon = if (showBackButton) {
                     {
-                        IconButton(onClick = { navController.navigateUp() }) {
+                        IconButton(onClick = onBackButtonClick) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,
                                 contentDescription = "Back"
@@ -78,7 +93,7 @@ fun RadioBrowserTopBar(
                         }
                     }
                 } else null,
-                title = { Text(title.value) },
+                title = { Text(title) },
                 backgroundColor = MaterialTheme.colors.primary
             )
         },
@@ -90,14 +105,20 @@ fun RadioBrowserTopBar(
 fun RadioBrowserScreen(
     url: String,
     padding: PaddingValues,
-    title: MutableState<String>,
-    onLinkClick: (url: String) -> Unit = {}
+    onLinkClick: (url: String, title: String) -> Unit
 ) {
-    val viewModel: BrowserViewModel = viewModel(factory = RadioBrowserViewModelFactory(url))
+
+    val viewModel: BrowserViewModel =
+        viewModel(factory = RadioBrowserViewModelFactory(url))
+
     val state by viewModel.directoryState.collectAsState()
 
-    Crossfade(targetState = state) {
-        RadioBrowserScreen(it, padding, title, onLinkClick) { viewModel.retry() }
+    Crossfade(targetState = state) { uiState ->
+        RadioBrowserScreen(
+            state = uiState,
+            padding,
+            onLinkClick = onLinkClick
+        ) { viewModel.retry() }
     }
 }
 
@@ -105,16 +126,14 @@ fun RadioBrowserScreen(
 fun RadioBrowserScreen(
     state: UiState<UiDirectory>,
     padding: PaddingValues = PaddingValues(),
-    title: MutableState<String>,
-    onLinkClick: (url: String) -> Unit,
-    onRetryClick: () -> Unit,
+    onLinkClick: (url: String, title: String) -> Unit = { _: String, _: String -> },
+    onRetryClick: () -> Unit = {}
 ) {
     when (state) {
-        UiState.Loading -> Loading()
-        is UiState.Error -> ErrorRetry(error = state.error, onRetryClick)
-        is UiState.Success -> {
-            state.data.title?.let { title.value = it }
-            RadioBrowserContent(
+        Loading -> Loading()
+        is Error -> ErrorRetry(error = state.error, onRetryClick)
+        is Success -> {
+            RadioBrowser(
                 directory = state.data,
                 padding = padding,
                 onLinkClick
@@ -124,10 +143,10 @@ fun RadioBrowserScreen(
 }
 
 @Composable
-fun RadioBrowserContent(
+fun RadioBrowser(
     directory: UiDirectory,
     padding: PaddingValues,
-    onLinkClick: (url: String) -> Unit
+    onLinkClick: (url: String, title: String) -> Unit
 ) {
     LazyColumn(
         Modifier.padding(padding),
@@ -135,6 +154,16 @@ fun RadioBrowserContent(
     ) {
         items(directory.body) { element ->
             Element(element, onLinkClick)
+        }
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun RadioBrowserPreview() {
+    VideoKilledTheRadioStarTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            RadioBrowserScreen(Success(SampleDirectoryData().directory()))
         }
     }
 }
