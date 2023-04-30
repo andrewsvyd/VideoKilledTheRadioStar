@@ -14,7 +14,7 @@ import com.svyd.videokilledtheradiostar.feature.browser.model.UiElement
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiElementType
 
 @Composable
-fun Element(element: UiElement, onLinkClick: (url: String) -> Unit) {
+fun Element(element: UiElement, onLinkClick: (url: String, title: String) -> Unit) {
     when (element.type) {
         UiElementType.SECTION -> Section(element, onLinkClick)
         UiElementType.LINK -> VerticalLink(element, onLinkClick)
@@ -23,7 +23,7 @@ fun Element(element: UiElement, onLinkClick: (url: String) -> Unit) {
 }
 
 @Composable
-fun Section(element: UiElement, onLinkClick: (url: String) -> Unit) {
+fun Section(element: UiElement, onLinkClick: (url: String, title: String) -> Unit) {
     Column {
         Text(
             text = element.text,
