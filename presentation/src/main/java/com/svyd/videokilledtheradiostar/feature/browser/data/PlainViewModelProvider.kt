@@ -9,12 +9,15 @@ import com.svyd.domain.common.exception.ErrorMapper
 import com.svyd.domain.common.interactor.Interactor
 import com.svyd.domain.common.interactor.ParametrizedInteractor
 import com.svyd.domain.common.mapper.TypeMapper
+import com.svyd.domain.common.mapper.TypeModifier
 import com.svyd.domain.interactor.DirectoryInteractor
 import com.svyd.domain.interactor.RootDirectoryInteractor
 import com.svyd.domain.repository.DirectoryRepository
 import com.svyd.domain.repository.model.Directory
+import com.svyd.videokilledtheradiostar.common.PlayerState
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiDirectory
 import com.svyd.videokilledtheradiostar.feature.browser.model.mapper.UiDirectoryMapper
+import com.svyd.videokilledtheradiostar.feature.browser.model.mapper.UiDirectoryModifier
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -37,6 +40,10 @@ class PlainViewModelProvider {
 
     fun provideMapper() : TypeMapper<Directory, UiDirectory> {
         return UiDirectoryMapper()
+    }
+
+    fun provideModifier() : TypeModifier<UiDirectory, PlayerState> {
+        return UiDirectoryModifier()
     }
 
     private fun provideRetrofit(): Retrofit {

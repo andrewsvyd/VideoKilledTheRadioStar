@@ -1,6 +1,8 @@
 package com.svyd.videokilledtheradiostar.feature.browser.ui
 
-import androidx.compose.animation.Crossfade
+import android.content.Intent
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.svyd.videokilledtheradiostar.R.*
 import com.svyd.videokilledtheradiostar.common.Destination
 import com.svyd.videokilledtheradiostar.common.Destination.Browser
+import com.svyd.videokilledtheradiostar.common.PlayerState
 import com.svyd.videokilledtheradiostar.common.UiState
 import com.svyd.videokilledtheradiostar.common.UiState.Error
 import com.svyd.videokilledtheradiostar.common.UiState.Loading
@@ -27,7 +31,9 @@ import com.svyd.videokilledtheradiostar.common.ui.theme.VideoKilledTheRadioStarT
 import com.svyd.videokilledtheradiostar.feature.browser.data.BrowserViewModel
 import com.svyd.videokilledtheradiostar.feature.browser.data.RadioBrowserViewModelFactory
 import com.svyd.videokilledtheradiostar.feature.browser.data.sample.SampleDirectoryData
-import com.svyd.videokilledtheradiostar.feature.browser.model.UiDirectory
+import com.svyd.videokilledtheradiostar.feature.browser.model.UiElement
+import com.svyd.videokilledtheradiostar.feature.browser.player.ComposableBroadcastReceiver
+import com.svyd.videokilledtheradiostar.feature.browser.player.PlayerService
 
 @Composable
 fun VideoKilledTheRadioStarApp() {
@@ -36,6 +42,14 @@ fun VideoKilledTheRadioStarApp() {
     var title by remember { mutableStateOf(appName) }
     val navController = rememberNavController()
     var showBackButton by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+    val onAudioClick: (url: String) -> Unit = {
+        val intent = Intent(context, PlayerService::class.java)
+        intent.putExtra(PlayerService.KEY_AUDIO_URL, it)
+        context.startService(intent)
+    }
 
     LaunchedEffect(navController) {
         navController
@@ -59,7 +73,8 @@ fun VideoKilledTheRadioStarApp() {
             composable(route = Browser.route) { backStackEntry ->
                 RadioBrowserScreen(
                     backStackEntry.arguments?.getString(Destination.URL),
-                    padding
+                    padding,
+                    onAudioClick,
                 ) { destinationUrl: String, destinationTitle: String ->
                     navController.navigate(
                         Browser.createRoute(
@@ -105,27 +120,50 @@ fun RadioBrowserTopBar(
 fun RadioBrowserScreen(
     url: String?,
     padding: PaddingValues,
+    onAudioClick: (url: String) -> Unit,
     onLinkClick: (url: String, title: String) -> Unit
 ) {
 
     val viewModel: BrowserViewModel =
         viewModel(factory = RadioBrowserViewModelFactory(url))
 
+    PlayerReceiver { viewModel.playerStateChanged(it) }
+
     val state by viewModel.directoryState.collectAsState()
 
-    Crossfade(targetState = state) { uiState ->
-        RadioBrowserScreen(
-            state = uiState,
-            padding,
-            onLinkClick = onLinkClick
-        ) { viewModel.retry() }
+    RadioBrowserScreen(
+        state = state,
+        padding,
+        onAudioClick,
+        onLinkClick = onLinkClick
+    ) { viewModel.retry() }
+}
+
+@Composable
+fun PlayerReceiver(onPlayerStateChanged: (PlayerState) -> Unit) {
+    ComposableBroadcastReceiver(PlayerService.ACTION_PLAYER_STATE_CHANGED) { intent ->
+        intent ?: return@ComposableBroadcastReceiver
+        val intentState = intent.getStringExtra(PlayerService.KEY_PLAYER_STATE)
+        val intentUrl = intent.getStringExtra(PlayerService.KEY_AUDIO_URL)
+
+        intentUrl ?: return@ComposableBroadcastReceiver
+
+        val playerState = when (intentState) {
+            PlayerService.PLAYER_STATE_LOADING -> PlayerState.Loading(intentUrl)
+            PlayerService.PLAYER_STATE_PLAY -> PlayerState.Playing(intentUrl)
+            PlayerService.PLAYER_STATE_PAUSE -> PlayerState.Pause(intentUrl)
+            else -> return@ComposableBroadcastReceiver
+        }
+
+        onPlayerStateChanged(playerState)
     }
 }
 
 @Composable
 fun RadioBrowserScreen(
-    state: UiState<UiDirectory>,
+    state: UiState<List<UiElement>>,
     padding: PaddingValues = PaddingValues(),
+    onAudioClick: (url: String) -> Unit = {},
     onLinkClick: (url: String, title: String) -> Unit = { _: String, _: String -> },
     onRetryClick: () -> Unit = {}
 ) {
@@ -134,8 +172,9 @@ fun RadioBrowserScreen(
         is Error -> ErrorRetry(error = state.error, onRetryClick)
         is Success -> {
             RadioBrowser(
-                directory = state.data,
+                elements = state.data,
                 padding = padding,
+                onAudioClick,
                 onLinkClick
             )
         }
@@ -144,16 +183,17 @@ fun RadioBrowserScreen(
 
 @Composable
 fun RadioBrowser(
-    directory: UiDirectory,
+    elements: List<UiElement>,
     padding: PaddingValues,
+    onAudioClick: (url: String) -> Unit,
     onLinkClick: (url: String, title: String) -> Unit
 ) {
     LazyColumn(
         Modifier.padding(padding),
         contentPadding = PaddingValues(0.dp, 0.dp, 0.dp, 16.dp)
     ) {
-        items(directory.body) { element ->
-            Element(element, onLinkClick)
+        items(elements) { element ->
+            Element(element, onAudioClick, onLinkClick)
         }
     }
 }
@@ -163,7 +203,7 @@ fun RadioBrowser(
 fun RadioBrowserPreview() {
     VideoKilledTheRadioStarTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            RadioBrowserScreen(Success(SampleDirectoryData().directory()))
+            RadioBrowserScreen(Success(SampleDirectoryData().directory().body))
         }
     }
 }

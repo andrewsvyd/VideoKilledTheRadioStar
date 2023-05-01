@@ -11,6 +11,8 @@ class RadioBrowserViewModelFactory(private val url: String?) :
             url,
             provider.provideDirectoryInteractor(),
             provider.provideRootDirectoryInteractor(),
-            provider.provideMapper()) as T
+            provider.provideMapper(),
+            provider.provideModifier()
+        ) as T
     }
 }
