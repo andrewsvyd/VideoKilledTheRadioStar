@@ -1,8 +1,7 @@
 package com.svyd.videokilledtheradiostar.feature.browser.ui
 
 import android.content.Intent
-import android.os.Build
-import androidx.annotation.RequiresApi
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,20 +19,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.svyd.videokilledtheradiostar.R.*
+import com.svyd.videokilledtheradiostar.common.ContentState
 import com.svyd.videokilledtheradiostar.common.Destination
 import com.svyd.videokilledtheradiostar.common.Destination.Browser
-import com.svyd.videokilledtheradiostar.common.PlayerState
+import com.svyd.videokilledtheradiostar.common.Event
 import com.svyd.videokilledtheradiostar.common.UiState
 import com.svyd.videokilledtheradiostar.common.UiState.Error
-import com.svyd.videokilledtheradiostar.common.UiState.Loading
 import com.svyd.videokilledtheradiostar.common.UiState.Success
 import com.svyd.videokilledtheradiostar.common.ui.theme.VideoKilledTheRadioStarTheme
 import com.svyd.videokilledtheradiostar.feature.browser.data.BrowserViewModel
-import com.svyd.videokilledtheradiostar.feature.browser.data.RadioBrowserViewModelFactory
+import com.svyd.videokilledtheradiostar.feature.browser.data.di.RadioBrowserViewModelFactory
 import com.svyd.videokilledtheradiostar.feature.browser.data.sample.SampleDirectoryData
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiElement
-import com.svyd.videokilledtheradiostar.feature.browser.player.ComposableBroadcastReceiver
 import com.svyd.videokilledtheradiostar.feature.browser.player.PlayerService
+import com.svyd.videokilledtheradiostar.feature.browser.player.ui.PlayerReceiver
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun VideoKilledTheRadioStarApp() {
@@ -48,6 +48,11 @@ fun VideoKilledTheRadioStarApp() {
     val onAudioClick: (url: String) -> Unit = {
         val intent = Intent(context, PlayerService::class.java)
         intent.putExtra(PlayerService.KEY_AUDIO_URL, it)
+        context.startService(intent)
+    }
+
+    val onContentLoaded: () -> Unit = {
+        val intent = Intent(context, PlayerService::class.java)
         context.startService(intent)
     }
 
@@ -74,6 +79,7 @@ fun VideoKilledTheRadioStarApp() {
                 RadioBrowserScreen(
                     backStackEntry.arguments?.getString(Destination.URL),
                     padding,
+                    onContentLoaded,
                     onAudioClick,
                 ) { destinationUrl: String, destinationTitle: String ->
                     navController.navigate(
@@ -120,16 +126,24 @@ fun RadioBrowserTopBar(
 fun RadioBrowserScreen(
     url: String?,
     padding: PaddingValues,
+    onContentLoaded: () -> Unit = {},
     onAudioClick: (url: String) -> Unit,
     onLinkClick: (url: String, title: String) -> Unit
 ) {
-
     val viewModel: BrowserViewModel =
         viewModel(factory = RadioBrowserViewModelFactory(url))
 
     PlayerReceiver { viewModel.playerStateChanged(it) }
 
     val state by viewModel.directoryState.collectAsState()
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                Event.ContentLoaded -> onContentLoaded()
+            }
+        }
+    }
 
     RadioBrowserScreen(
         state = state,
@@ -140,26 +154,6 @@ fun RadioBrowserScreen(
 }
 
 @Composable
-fun PlayerReceiver(onPlayerStateChanged: (PlayerState) -> Unit) {
-    ComposableBroadcastReceiver(PlayerService.ACTION_PLAYER_STATE_CHANGED) { intent ->
-        intent ?: return@ComposableBroadcastReceiver
-        val intentState = intent.getStringExtra(PlayerService.KEY_PLAYER_STATE)
-        val intentUrl = intent.getStringExtra(PlayerService.KEY_AUDIO_URL)
-
-        intentUrl ?: return@ComposableBroadcastReceiver
-
-        val playerState = when (intentState) {
-            PlayerService.PLAYER_STATE_LOADING -> PlayerState.Loading(intentUrl)
-            PlayerService.PLAYER_STATE_PLAY -> PlayerState.Playing(intentUrl)
-            PlayerService.PLAYER_STATE_PAUSE -> PlayerState.Pause(intentUrl)
-            else -> return@ComposableBroadcastReceiver
-        }
-
-        onPlayerStateChanged(playerState)
-    }
-}
-
-@Composable
 fun RadioBrowserScreen(
     state: UiState<List<UiElement>>,
     padding: PaddingValues = PaddingValues(),
@@ -167,16 +161,18 @@ fun RadioBrowserScreen(
     onLinkClick: (url: String, title: String) -> Unit = { _: String, _: String -> },
     onRetryClick: () -> Unit = {}
 ) {
-    when (state) {
-        Loading -> Loading()
-        is Error -> ErrorRetry(error = state.error, onRetryClick)
-        is Success -> {
-            RadioBrowser(
-                elements = state.data,
-                padding = padding,
-                onAudioClick,
-                onLinkClick
-            )
+    Crossfade(targetState = state.contentState) {
+        when (it) {
+            ContentState.Loading -> Loading()
+            is ContentState.Error -> ErrorRetry(error = (state as Error).error, onRetryClick)
+            is ContentState.Success -> {
+                RadioBrowser(
+                    elements = (state as Success).data,
+                    padding = padding,
+                    onAudioClick,
+                    onLinkClick
+                )
+            }
         }
     }
 }

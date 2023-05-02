@@ -1,10 +1,10 @@
-package com.svyd.videokilledtheradiostar.feature.browser.data
+package com.svyd.videokilledtheradiostar.feature.browser.data.di
 
 import com.google.gson.Gson
-import com.svyd.data.repository.ApiConstants
-import com.svyd.data.repository.DirectoryService
-import com.svyd.data.repository.NetworkDirectoryRepository
-import com.svyd.data.repository.model.mapper.DirectoryMapper
+import com.svyd.data.common.ApiConstants
+import com.svyd.data.repository.browser.DirectoryService
+import com.svyd.data.repository.browser.NetworkDirectoryRepository
+import com.svyd.data.repository.browser.model.mapper.DirectoryMapper
 import com.svyd.domain.common.exception.ErrorMapper
 import com.svyd.domain.common.interactor.Interactor
 import com.svyd.domain.common.interactor.ParametrizedInteractor
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit
  * Todo: migrate to Hilt or Dagger instead
  */
 
-class PlainViewModelProvider {
+class RadioBrowserViewModelProvider {
 
     fun provideDirectoryInteractor() : ParametrizedInteractor<Directory, String> {
         return DirectoryInteractor(provideRepository(provideService(provideRetrofit()), DirectoryMapper()), ErrorMapper())

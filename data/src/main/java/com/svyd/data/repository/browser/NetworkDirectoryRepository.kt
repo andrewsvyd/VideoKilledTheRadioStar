@@ -1,6 +1,7 @@
-package com.svyd.data.repository
+package com.svyd.data.repository.browser
 
-import com.svyd.data.repository.model.DirectoryEntity
+import com.svyd.data.common.ApiConstants
+import com.svyd.data.repository.browser.model.DirectoryEntity
 import com.svyd.domain.common.mapper.TypeMapper
 import com.svyd.domain.repository.DirectoryRepository
 import com.svyd.domain.repository.model.Directory

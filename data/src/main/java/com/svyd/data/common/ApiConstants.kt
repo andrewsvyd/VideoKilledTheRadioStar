@@ -1,4 +1,4 @@
-package com.svyd.data.repository
+package com.svyd.data.common
 
 object ApiConstants {
     const val WRITE_TIME_OUT= 30L

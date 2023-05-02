@@ -1,7 +1,7 @@
-package com.svyd.data.repository.model.mapper
+package com.svyd.data.repository.browser.model.mapper
 
-import com.svyd.data.repository.model.DirectoryEntity
-import com.svyd.data.repository.model.ElementEntity
+import com.svyd.data.repository.browser.model.DirectoryEntity
+import com.svyd.data.repository.browser.model.ElementEntity
 import com.svyd.domain.common.mapper.TypeMapper
 import com.svyd.domain.repository.model.Directory
 import com.svyd.domain.repository.model.Element
