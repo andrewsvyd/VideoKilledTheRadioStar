@@ -1,4 +1,4 @@
-package com.svyd.data.repository.model
+package com.svyd.data.repository.browser.model
 
 import com.google.gson.annotations.SerializedName
 

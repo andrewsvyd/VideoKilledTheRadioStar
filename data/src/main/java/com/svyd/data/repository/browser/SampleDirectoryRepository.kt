@@ -1,8 +1,8 @@
-package com.svyd.data.repository
+package com.svyd.data.repository.browser
 
 import android.app.Activity
 import com.google.gson.Gson
-import com.svyd.data.repository.model.DirectoryEntity
+import com.svyd.data.repository.browser.model.DirectoryEntity
 import com.svyd.domain.common.mapper.TypeMapper
 import com.svyd.domain.repository.model.Directory
 import com.svyd.domain.repository.DirectoryRepository

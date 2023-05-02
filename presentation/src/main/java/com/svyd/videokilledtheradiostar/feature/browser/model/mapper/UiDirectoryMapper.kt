@@ -3,6 +3,7 @@ package com.svyd.videokilledtheradiostar.feature.browser.model.mapper
 import com.svyd.domain.common.mapper.TypeMapper
 import com.svyd.domain.repository.model.Directory
 import com.svyd.domain.repository.model.Element
+import com.svyd.videokilledtheradiostar.common.PlayerState
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiDirectory
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiElement
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiElementType
@@ -35,7 +36,8 @@ class UiDirectoryMapper : TypeMapper<Directory, UiDirectory> {
             element.playingImage,
             element.image,
             element.currentTrack,
-            transformElements(element.children)
+            transformElements(element.children),
+            PlayerState.Pause(element.url.orEmpty())
         )
     }
 

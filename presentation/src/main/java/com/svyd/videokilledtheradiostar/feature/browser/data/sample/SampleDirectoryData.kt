@@ -1,8 +1,8 @@
 package com.svyd.videokilledtheradiostar.feature.browser.data.sample
 
 import com.google.gson.Gson
-import com.svyd.data.repository.model.DirectoryEntity
-import com.svyd.data.repository.model.mapper.DirectoryMapper
+import com.svyd.data.repository.browser.model.DirectoryEntity
+import com.svyd.data.repository.browser.model.mapper.DirectoryMapper
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiDirectory
 import com.svyd.videokilledtheradiostar.feature.browser.model.mapper.UiDirectoryMapper
 
@@ -10,10 +10,6 @@ class SampleDirectoryData {
 
     fun directory(): UiDirectory {
         return UiDirectoryMapper().map(DirectoryMapper().map(getSampleDirectory(topFortyDirectory)))
-    }
-
-    fun rootDirectory(): UiDirectory {
-        return UiDirectoryMapper().map(DirectoryMapper().map(getSampleDirectory(rootDirectory)))
     }
 
     private fun getSampleDirectory(path: String): DirectoryEntity {
@@ -247,63 +243,5 @@ class SampleDirectoryData {
             "    }\n" +
             "  ]\n" +
             "}"
-
-    private val rootDirectory = "{\n" +
-            "  \"head\": {\n" +
-            "    \"title\": \"Browse\",\n" +
-            "    \"status\": \"200\"\n" +
-            "  },\n" +
-            "  \"body\": [\n" +
-            "    {\n" +
-            "      \"element\": \"outline\",\n" +
-            "      \"type\": \"link\",\n" +
-            "      \"text\": \"Local Radio\",\n" +
-            "      \"URL\": \"http://opml.radiotime.com/Browse.ashx?c=local\",\n" +
-            "      \"key\": \"local\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"element\": \"outline\",\n" +
-            "      \"type\": \"link\",\n" +
-            "      \"text\": \"Music\",\n" +
-            "      \"URL\": \"http://opml.radiotime.com/Browse.ashx?c=music\",\n" +
-            "      \"key\": \"music\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"element\": \"outline\",\n" +
-            "      \"type\": \"link\",\n" +
-            "      \"text\": \"Talk\",\n" +
-            "      \"URL\": \"http://opml.radiotime.com/Browse.ashx?c=talk\",\n" +
-            "      \"key\": \"talk\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"element\": \"outline\",\n" +
-            "      \"type\": \"link\",\n" +
-            "      \"text\": \"Sports\",\n" +
-            "      \"URL\": \"http://opml.radiotime.com/Browse.ashx?c=sports\",\n" +
-            "      \"key\": \"sports\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"element\": \"outline\",\n" +
-            "      \"type\": \"link\",\n" +
-            "      \"text\": \"By Location\",\n" +
-            "      \"URL\": \"http://opml.radiotime.com/Browse.ashx?id=r0\",\n" +
-            "      \"key\": \"location\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"element\": \"outline\",\n" +
-            "      \"type\": \"link\",\n" +
-            "      \"text\": \"By Language\",\n" +
-            "      \"URL\": \"http://opml.radiotime.com/Browse.ashx?c=lang\",\n" +
-            "      \"key\": \"language\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"element\": \"outline\",\n" +
-            "      \"type\": \"link\",\n" +
-            "      \"text\": \"Podcasts\",\n" +
-            "      \"URL\": \"http://opml.radiotime.com/Browse.ashx?c=podcast\",\n" +
-            "      \"key\": \"podcast\"\n" +
-            "    }\n" +
-            "  ]\n" +
-            "}\n"
 
 }

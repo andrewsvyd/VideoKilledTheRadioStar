@@ -1,6 +1,6 @@
-package com.svyd.data.repository
+package com.svyd.data.repository.browser
 
-import com.svyd.data.repository.model.DirectoryEntity
+import com.svyd.data.repository.browser.model.DirectoryEntity
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.http.Url

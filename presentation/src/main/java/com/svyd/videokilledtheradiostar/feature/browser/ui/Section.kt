@@ -14,16 +14,24 @@ import com.svyd.videokilledtheradiostar.feature.browser.model.UiElement
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiElementType
 
 @Composable
-fun Element(element: UiElement, onLinkClick: (url: String, title: String) -> Unit) {
+fun Element(
+    element: UiElement,
+    onAudioClick: (url: String) -> Unit,
+    onLinkClick: (url: String, title: String) -> Unit
+) {
     when (element.type) {
-        UiElementType.SECTION -> Section(element, onLinkClick)
+        UiElementType.SECTION -> Section(element, onAudioClick, onLinkClick)
         UiElementType.LINK -> VerticalLink(element, onLinkClick)
-        UiElementType.AUDIO -> VerticalAudio(element)
+        UiElementType.AUDIO -> VerticalAudio(element, onAudioClick)
     }
 }
 
 @Composable
-fun Section(element: UiElement, onLinkClick: (url: String, title: String) -> Unit) {
+fun Section(
+    element: UiElement,
+    onAudioClick: (url: String) -> Unit,
+    onLinkClick: (url: String, title: String) -> Unit
+) {
     Column {
         Text(
             text = element.text,
@@ -34,10 +42,13 @@ fun Section(element: UiElement, onLinkClick: (url: String, title: String) -> Uni
             LazyRow(
                 contentPadding = PaddingValues(16.dp, 1.dp, 0.dp, 4.dp),
             ) {
-                items(element.children) {
+                items(element.children,
+                key = {
+                    it.url.orEmpty()
+                }) {
                     when (it.type) {
                         UiElementType.LINK -> HorizontalLink(element = it, onLinkClick)
-                        UiElementType.AUDIO -> HorizontalAudio(element = it)
+                        UiElementType.AUDIO -> HorizontalAudio(element = it, onAudioClick)
                         else -> {}
                     }
                 }

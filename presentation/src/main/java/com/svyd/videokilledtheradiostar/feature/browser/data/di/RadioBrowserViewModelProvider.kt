@@ -1,20 +1,23 @@
-package com.svyd.videokilledtheradiostar.feature.browser.data
+package com.svyd.videokilledtheradiostar.feature.browser.data.di
 
 import com.google.gson.Gson
-import com.svyd.data.repository.ApiConstants
-import com.svyd.data.repository.DirectoryService
-import com.svyd.data.repository.NetworkDirectoryRepository
-import com.svyd.data.repository.model.mapper.DirectoryMapper
+import com.svyd.data.common.ApiConstants
+import com.svyd.data.repository.browser.DirectoryService
+import com.svyd.data.repository.browser.NetworkDirectoryRepository
+import com.svyd.data.repository.browser.model.mapper.DirectoryMapper
 import com.svyd.domain.common.exception.ErrorMapper
 import com.svyd.domain.common.interactor.Interactor
 import com.svyd.domain.common.interactor.ParametrizedInteractor
 import com.svyd.domain.common.mapper.TypeMapper
+import com.svyd.domain.common.mapper.TypeModifier
 import com.svyd.domain.interactor.DirectoryInteractor
 import com.svyd.domain.interactor.RootDirectoryInteractor
 import com.svyd.domain.repository.DirectoryRepository
 import com.svyd.domain.repository.model.Directory
+import com.svyd.videokilledtheradiostar.common.PlayerState
 import com.svyd.videokilledtheradiostar.feature.browser.model.UiDirectory
 import com.svyd.videokilledtheradiostar.feature.browser.model.mapper.UiDirectoryMapper
+import com.svyd.videokilledtheradiostar.feature.browser.model.mapper.UiDirectoryModifier
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -25,7 +28,7 @@ import java.util.concurrent.TimeUnit
  * Todo: migrate to Hilt or Dagger instead
  */
 
-class PlainViewModelProvider {
+class RadioBrowserViewModelProvider {
 
     fun provideDirectoryInteractor() : ParametrizedInteractor<Directory, String> {
         return DirectoryInteractor(provideRepository(provideService(provideRetrofit()), DirectoryMapper()), ErrorMapper())
@@ -37,6 +40,10 @@ class PlainViewModelProvider {
 
     fun provideMapper() : TypeMapper<Directory, UiDirectory> {
         return UiDirectoryMapper()
+    }
+
+    fun provideModifier() : TypeModifier<UiDirectory, PlayerState> {
+        return UiDirectoryModifier()
     }
 
     private fun provideRetrofit(): Retrofit {
